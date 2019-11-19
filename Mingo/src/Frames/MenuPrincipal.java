@@ -40,6 +40,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     ResultSet rs;
     ResultSetMetaData rsm;
     DefaultTableModel dtm;
+    String db_path= "src/Mingo.db";
     
     ReporteDAO rp = new ReporteDAO();
     
@@ -58,7 +59,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     public void importar() throws SQLException{
        try
        {
-           Connection conn = DriverManager.getConnection( "jdbc:sqlite:src/JDBC/Mingo.db");
+           Connection conn = DriverManager.getConnection( "jdbc:sqlite:"+db_path);
         PreparedStatement ps =conn.prepareStatement("select ID,Nombre,Talla,Marca,Cantidad,Precio from Inventario");
         rs=ps.executeQuery();
         rsm=rs.getMetaData();
@@ -88,7 +89,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     public void importar1() throws SQLException{
        try
        {
-           Connection conn = DriverManager.getConnection( "jdbc:sqlite:src/JDBC/Mingo.db");
+           Connection conn = DriverManager.getConnection( "jdbc:sqlite:"+db_path);
         PreparedStatement ps =conn.prepareStatement("select ID,Nombre,Talla,Marca,Cantidad,Precio from Inventario");
         rs=ps.executeQuery();
         rsm=rs.getMetaData();
@@ -847,7 +848,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     public void AddFactura(){
         Connection conn;
         try {
-            conn = DriverManager.getConnection( "jdbc:sqlite:src/JDBC/Mingo.db");
+            conn = DriverManager.getConnection( "jdbc:sqlite:"+db_path);
             PreparedStatement ps = conn.prepareStatement("insert into Factura (Fecha) values (current_date);");
             ps.executeUpdate();
             ps.close();
@@ -859,7 +860,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     public void GetID(){
         try {
              
-            Connection conn  = DriverManager.getConnection( "jdbc:sqlite:src/JDBC/Mingo.db");
+            Connection conn  = DriverManager.getConnection( "jdbc:sqlite:"+db_path);
             PreparedStatement ps1 = conn.prepareStatement("SELECT ID FROM Factura WHERE ID = (SELECT MAX( ID )  FROM Factura);");
 		ResultSet rs = ps1.executeQuery();
                 UltimaFactura = rs.getString("ID");
@@ -877,7 +878,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     public void  AddFacturaDetalles(){
     try {
     // set all the preparedstatement parameters
-    Connection conn = DriverManager.getConnection( "jdbc:sqlite:src/JDBC/Mingo.db");
+    Connection conn = DriverManager.getConnection( "jdbc:sqlite:"+db_path);
     for(int i = 0; i<jTable2.getRowCount();i++){
         PreparedStatement ps = conn.prepareStatement("insert into FacturaDetalles (CodigoFactura,CodigoProducto,Detalle,Cantidad,Total,Fecha) values (?,?,?,?,?,current_date)");
         ps.setString(1, UltimaFactura);
@@ -967,7 +968,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         try{
 
     int rows=jTable1.getRowCount();
-    Connection conn = DriverManager.getConnection( "jdbc:sqlite:src/JDBC/Mingo.db");
+    Connection conn = DriverManager.getConnection( "jdbc:sqlite:"+db_path);
     //PreparedStatement st = conn.prepareStatement("");
 
 
@@ -1019,7 +1020,7 @@ throws SQLException
 
           try {
             // set all the preparedstatement parameters
-            Connection conn = DriverManager.getConnection( "jdbc:sqlite:src/JDBC/Mingo.db");
+            Connection conn = DriverManager.getConnection( "jdbc:sqlite:"+db_path);
             PreparedStatement st = conn.prepareStatement(query);
             st.setString(1, txtNombre.getText().toString());
             st.setString(2, txtTalla.getText().toString());
@@ -1062,7 +1063,7 @@ throws SQLException
 
               try {
                 // set all the preparedstatement parameters
-                Connection conn = DriverManager.getConnection( "jdbc:sqlite:src/JDBC/Mingo.db");
+                Connection conn = DriverManager.getConnection( "jdbc:sqlite:"+db_path);
                 PreparedStatement st = conn.prepareStatement(query);
                 st.setString(1, jtxtID.getText().toString());
                 st.setString(2, txtNombre.getText().toString());
@@ -1110,7 +1111,7 @@ throws SQLException
 
   try {
     // set all the preparedstatement parameters
-    Connection conn = DriverManager.getConnection( "jdbc:sqlite:src/JDBC/Mingo.db");
+    Connection conn = DriverManager.getConnection( "jdbc:sqlite:"+db_path);
     PreparedStatement st = conn.prepareStatement(query);
     st.setString(1, txtNombre.getText().toString());
     st.setString(2, txtTalla.getText().toString());
@@ -1169,7 +1170,7 @@ throws SQLException
 
   try {
     // set all the preparedstatement parameters
-    Connection conn = DriverManager.getConnection( "jdbc:sqlite:src/JDBC/Mingo.db");
+    Connection conn = DriverManager.getConnection( "jdbc:sqlite:"+db_path);
     PreparedStatement st = conn.prepareStatement("delete from Inventario where ID="+jtxtID.getText().toString());
       
     // execute the preparedstatement insert
@@ -1306,7 +1307,7 @@ throws SQLException
 
     public void ObteneTotalVendido() throws SQLException{
         try {
-            Connection conn = DriverManager.getConnection( "jdbc:sqlite:src/JDBC/Mingo.db");
+            Connection conn = DriverManager.getConnection( "jdbc:sqlite:"+db_path);
             PreparedStatement ps1 =conn.prepareStatement("select Total from FacturaDetalles where Fecha= current_date");
         ResultSet rs1;
         ResultSetMetaData rsm1;
@@ -1332,7 +1333,7 @@ throws SQLException
    
     public void ObtenerCantidadVentas() throws SQLException{
         try {
-            Connection conn = DriverManager.getConnection( "jdbc:sqlite:src/JDBC/Mingo.db");
+            Connection conn = DriverManager.getConnection( "jdbc:sqlite:"+db_path);
             PreparedStatement ps1 =conn.prepareStatement("select * from Factura where Fecha= current_date");
         ResultSet rs1;
         ResultSetMetaData rsm1;
@@ -1360,7 +1361,7 @@ throws SQLException
            limpiarTabla();
             
            System.err.println(rp.getQuery());
-           Connection conn = DriverManager.getConnection( "jdbc:sqlite:src/JDBC/Mingo.db");
+           Connection conn = DriverManager.getConnection( "jdbc:sqlite:"+db_path);
         PreparedStatement ps =conn.prepareStatement("select * from FacturaDetalles "+rp.getQuery());
         rs=ps.executeQuery();
         rsm=rs.getMetaData();
