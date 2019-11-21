@@ -43,6 +43,7 @@ public class ImprimirFactura extends javax.swing.JFrame implements Printable{
     ResultSet rs;
     ResultSetMetaData rsm;
     DefaultTableModel dtm;
+    String db_path= "src/Mingo.db";
     //ReporteDAO rp = new ReporteDAO();
     //MenuPrincipal mp = new MenuPrincipal();
     
@@ -51,7 +52,7 @@ public class ImprimirFactura extends javax.swing.JFrame implements Printable{
        try
        {
            ReporteDAO rp = rpd;
-           Connection conn = DriverManager.getConnection( "jdbc:sqlite:src/JDBC/Mingo.db");
+           Connection conn = DriverManager.getConnection( "jdbc:sqlite:"+db_path);
         PreparedStatement ps =conn.prepareStatement("SELECT FacturaDetalles.Cantidad,FacturaDetalles.Detalle,Inventario.Precio,FacturaDetalles.Total FROM ((FacturaDetalles INNER JOIN Factura ON FacturaDetalles.CodigoFactura = Factura.ID) INNER JOIN Inventario ON FacturaDetalles.CodigoProducto =Inventario.ID) where Factura.ID = "+numeroID.getText().toString());
         rs=ps.executeQuery();
         rsm=rs.getMetaData();
@@ -352,7 +353,7 @@ public class ImprimirFactura extends javax.swing.JFrame implements Printable{
     public void GetID(){
         try {
             ReporteDAO rp = new ReporteDAO();
-            Connection conn  = DriverManager.getConnection( "jdbc:sqlite:src/JDBC/Mingo.db");
+            Connection conn  = DriverManager.getConnection( "jdbc:sqlite:"+db_path);
             PreparedStatement ps1 = conn.prepareStatement("SELECT Fecha FROM Factura WHERE ID = (SELECT MAX( ID )  FROM Factura);");
 		ResultSet rs = ps1.executeQuery();
                 rp.setFecha(rs.getString("Fecha"));
